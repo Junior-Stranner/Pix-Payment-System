@@ -1,17 +1,42 @@
 version: '3.9'
 
 services:
+  # Configuração do serviço do banco de dados PostgreSQL
   db:
-    image: postgres:16.2
-    restart: always
+    image: postgres:latest  # Usa a imagem mais recente do PostgreSQL disponível no Docker Hub
+    restart: always  # Garante que o contêiner seja reiniciado sempre que parar
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: payment-system
+      TZ: America/Sao_Paulo  # Configura o fuso horário para São Paulo
+      POSTGRES_USER: postgres  # Define o nome de usuário do PostgreSQL
+      POSTGRES_PASSWORD: 123  # Define a senha do usuário do PostgreSQL
+      POSTGRES_DB: payment-system  # Define o nome do banco de dados PostgreSQL
     ports:
-      - 5432:5432
-    volumes:
-      - db_data:/var/lib/postgresql/data
+      - "5432:5432"  # Mapeia a porta 5432 do host para a porta 5432 do contêiner PostgreSQL
+    expose:
+      - "5432"  # Expõe a porta 5432 para outros contêineres na mesma rede
+    networks:
+      - jujuba-network  # Associa o contêiner à rede personalizada jujuba-network
 
-volumes:
-  db_data:
+  # Configuração do serviço da aplicação Spring Boot
+  payment-system:
+    image: jujuba/payment-system  # Usa a imagem da aplicação Spring Boot
+    restart: always  # Garante que o contêiner seja reiniciado sempre que parar
+    build: ./payment-system  # Usa o Dockerfile no diretório ./payment-system para construir a imagem
+    working_dir: /payment-system  # Define o diretório de trabalho dentro do contêiner
+    environment:
+      TZ: America/Sao_Paulo  # Configura o fuso horário para São Paulo
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/payment-system  # Define a URL do banco de dados para a aplicação Spring Boot
+      SPRING_DATASOURCE_USERNAME: postgres  # Define o nome de usuário do banco de dados para a aplicação Spring Boot
+      SPRING_DATASOURCE_PASSWORD: 123  # Define a senha do banco de dados para a aplicação Spring Boot
+    ports:
+      - "80:80"  # Mapeia a porta 80 do host para a porta 80 da aplicação Spring Boot
+    command: mvn spring-boot:run  # Comando para executar a aplicação Spring Boot com Maven
+    depends_on:
+      - db  # Define a dependência da aplicação Spring Boot em relação ao serviço do banco de dados
+    networks:
+      - jujuba-network  # Associa o contêiner à rede personalizada jujuba-network
+
+# Definição da rede personalizada
+networks:
+  jujuba-network:
+    driver: bridge  # Usa o driver de rede bridge
