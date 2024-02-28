@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.jujubaprojects.paymentsystem.Entity.User;
 import br.com.jujubaprojects.paymentsystem.Service.UserService;
+import br.com.jujubaprojects.paymentsystem.dto.UserCreateRequestDTO;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -18,7 +20,9 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody User user){
-    return ResponseEntity.ok().build();
+    public ResponseEntity<User> registerUser(@RequestBody @Valid UserCreateRequestDTO userCreateRequest){
+        User user = userCreateRequest.toModel();
+        User savedUser = this.userService.registerUser(user);
+    return ResponseEntity.ok().body(savedUser);
     }
 }
