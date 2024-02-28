@@ -3,10 +3,12 @@ package br.com.jujubaprojects.paymentsystem.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.jujubaprojects.paymentsystem.Entity.User;
 import br.com.jujubaprojects.paymentsystem.Repository.UserRepository;
+import br.com.jujubaprojects.paymentsystem.Utils.RandomString;
 
 @Service
 public class UserService {
@@ -15,7 +17,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-
+    private PasswordEncoder passwordEncoder;
 
     public User registerUser(User user){
         List<User> users = this.userRepository.findAll();
@@ -23,7 +25,12 @@ public class UserService {
         if(userRepository.findByEmail(user.getEmail()) != null || emailExists){
             throw new RuntimeException("email already exists");
         }else{
-            String encodedPassword = 
+            String passwordEncoder = passwordEncoder.encode(user.getPassword());
+            user.setPassword(passwordEncoder);
+
+            String randomeCode = RandomString.generateRandomString(64);
+            user.setVerificationCode(randomeCode);
+            user.setEnable(false);
             return this.userRepository.save(user);
 
         }
