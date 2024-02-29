@@ -17,34 +17,16 @@ public class MailService {
     @Autowired
     private JavaMailSender emailSender;
 
-      private String verifyURL = "http://localhost:8080/user/verify?code=";
+    private String verifyURL = "http://localhost:8080/user/verify?code=";
 
     @SuppressWarnings("null")
- // Método para enviar um e-mail de verificação para o usuário
-public void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
-    // Obtém o endereço de e-mail do usuário
-    String toAddress = user.getEmail();
-    
-    // Endereço de e-mail do remetente
-    String fromAddress = "blockbitcompany@gmail.com";
-    
-    // Nome do remetente exibido no e-mail
-    String senderName = "Blockbit";
-    
-    // Assunto do e-mail
-    String subject = "Please verify your registration";
-    
-    // Corpo do e-mail (conteúdo da mensagem de verificação)
-    String emailContent = "Dear " + user.getName() + ",\n\n"
-            + "Thank you for registering with us. Please click the link below to verify your registration:\n\n"
-            + "Verification Link: http://yourwebsite.com/verify?code=" + user.getVerificationCode() + "\n\n"
-            + "If you did not register with us, please ignore this email.\n\n"
-            + "Best regards,\n"
-            + "The Blockbit Team";
+    public void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
+        String toAddres = user.getEmail();
+        String fromAddres = "blockbitcompany@gmail.com";
+        String senderName = "Blockbit";
+        String subject = "Please verify your registration";
 
-    // Aqui você escreveria o código para enviar o e-mail usando um serviço de e-mail ou biblioteca de e-mail
-
-          String content = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+        String content = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
                 "\n" +
                 "<head>\n" +
@@ -431,34 +413,22 @@ public void sendVerificationEmail(User user) throws MessagingException, Unsuppor
                 "\n" +
                 "</html>";
 
-                // Cria um objeto MimeMessage para representar o email
-                MimeMessage message = emailSender.createMimeMessage();
-        
-                // Cria um helper MimeMessageHelper para facilitar a configuração do email
-                MimeMessageHelper helper = new MimeMessageHelper(message);
-                
-                // Define o remetente do email
-                helper.setFrom(fromAddress, senderName);
-                
-                // Define o destinatário do email
-                helper.setTo(toAddress);
-                
-                // Define o assunto do email
-                helper.setSubject(subject);
-        
-                // Substitui placeholders no conteúdo do email com informações específicas do usuário
-                content = content.replace("[[NAME]]", user.getName());
-                
-                // Cria o URL de verificação usando o código de verificação do usuário
-                String verifyURL = this.verifyURL + user.getVerificationCode();
-                
-                // Substitui um placeholder no conteúdo do email com o URL de verificação
-                content = content.replace("[[URL]]", verifyURL);
-                
-                // Define o conteúdo do email, permitindo HTML
-                helper.setText(content, true);
-                
-                // Envia o email
-                emailSender.send(message);
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddres, senderName);
+        helper.setTo(toAddres);
+        helper.setSubject(subject);
+
+        content = content.replace("[[NAME]]", user.getName());
+
+        String verifyURL = this.verifyURL + user.getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        emailSender.send(message);
+
     }
 }

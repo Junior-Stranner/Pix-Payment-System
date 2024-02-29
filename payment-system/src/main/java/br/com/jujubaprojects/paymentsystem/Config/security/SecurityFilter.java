@@ -1,4 +1,4 @@
-package br.com.jujubaprojects.paymentsystem.Config.security;
+/*package br.com.jujubaprojects.paymentsystem.Config.security;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter  extends OncePerRequestFilter{
     
 
-       @Autowired
+    @Autowired
     private TokenService tokenService;
 
     @Autowired
@@ -55,4 +55,4 @@ public class SecurityFilter  extends OncePerRequestFilter{
         }
 
     }
-}
+}*/

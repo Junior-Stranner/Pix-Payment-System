@@ -3,7 +3,6 @@ package br.com.jujubaprojects.paymentsystem.Service;
 import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +21,11 @@ public class UserService {
     private  PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JavaMailSender emailSender;
+    private MailService mailService;
 
 
-    public UserResponseDTO registerUser(User user) throws MessagingException, UnsupportedEncodingException {
+    public UserResponseDTO registerUser(User user) throws UnsupportedEncodingException, MessagingException {
+        
         if(userRepository.findByEmail(user.getEmail()) != null){
             throw new RuntimeException("This email already exists");
         } else {
@@ -42,7 +42,7 @@ public class UserService {
                 user.getEmail(),
                 user.getPassword());
 
-            emailSender.sendVerificationEmail(user);
+            mailService.sendVerificationEmail(user);
             this.userRepository.save(user);
             return userResponse;
     }

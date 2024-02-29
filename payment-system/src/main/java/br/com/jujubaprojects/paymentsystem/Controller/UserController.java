@@ -25,20 +25,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid UserCreateRequestDTO userCreateRequest) throws UnsupportedEncodingException, MessagingException{
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid UserCreateRequestDTO userCreateRequest) throws MessagingException, UnsupportedEncodingException {
         User user = userCreateRequest.toModel();
-        UserResponseDTO savedUser = this.userService.registerUser(user);
-    return ResponseEntity.ok().body(savedUser);
+        UserResponseDTO userSaved = userService.registerUser(user);
+        return ResponseEntity.ok().body(userSaved);
     }
-    
-
     @GetMapping("/verify")
-    public String verifyUser(@Param("code")String code){
-       if(userService.verify(code)){
-        return "veryfy_sucess";
-       }else{
-    return code;
-       }
+    public String verifyUser(@Param("code") String code){
+        if(userService.verify(code)){
+            return "verify_success";
+        } else {
+            return "verify_fail";
+        }
     }
 }
