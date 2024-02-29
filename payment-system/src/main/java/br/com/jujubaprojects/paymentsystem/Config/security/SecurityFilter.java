@@ -1,20 +1,21 @@
-/*package br.com.jujubaprojects.paymentsystem.Config.security;
+package br.com.jujubaprojects.paymentsystem.Config.security;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.jujubaprojects.paymentsystem.Repository.UserRepository;
+import br.com.jujubaprojects.paymentsystem.Service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 @Component
 public class SecurityFilter  extends OncePerRequestFilter{
@@ -33,7 +34,7 @@ public class SecurityFilter  extends OncePerRequestFilter{
                                     FilterChain filterChain) throws ServletException, IOException {
 
         var token = this.recoverToken(request);
-        if (token != null){
+         if (token != null){
             var subject = tokenService.validateToken(token);
             UserDetails user = userRepository.findByEmail(subject);
 
@@ -55,4 +56,4 @@ public class SecurityFilter  extends OncePerRequestFilter{
         }
 
     }
-}*/
+}
