@@ -51,6 +51,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/test")
+    public String teste(){
+        return "você está logado";
+    }
+
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
