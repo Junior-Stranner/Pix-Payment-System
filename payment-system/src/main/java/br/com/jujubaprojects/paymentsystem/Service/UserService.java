@@ -3,12 +3,14 @@ package br.com.jujubaprojects.paymentsystem.Service;
 import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.jujubaprojects.paymentsystem.Entity.User;
 import br.com.jujubaprojects.paymentsystem.Repository.UserRepository;
 import br.com.jujubaprojects.paymentsystem.Utils.RandomString;
+import br.com.jujubaprojects.paymentsystem.dto.UserResponseDTO;
 import jakarta.mail.MessagingException;
 
 @Service
@@ -19,8 +21,11 @@ public class UserService {
     @Autowired
     private  PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JavaMailSender emailSender;
 
-    public User registerUser(User user) throws MessagingException, UnsupportedEncodingException {
+
+    public UserResponseDTO registerUser(User user) throws MessagingException, UnsupportedEncodingException {
         if(userRepository.findByEmail(user.getEmail()) != null){
             throw new RuntimeException("This email already exists");
         } else {
@@ -31,11 +36,17 @@ public class UserService {
             user.setVerificationCode(randomCode);
             user.setEnabled(false);
 
-         //   mailService.sendVerificationEmail(user);
+            UserResponseDTO userResponse = new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword());
 
-            return  userRepository.save(user);
-        }
+            emailSender.sendVerificationEmail(user);
+            this.userRepository.save(user);
+            return userResponse;
     }
+}
 
     public boolean verify(String verificationCode){
 
