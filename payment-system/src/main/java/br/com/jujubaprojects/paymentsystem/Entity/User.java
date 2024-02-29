@@ -23,17 +23,17 @@ public class User implements UserDetails{
     private String password;
     private String verificationCode;
 
-    private boolean enable;
+    private boolean enabled;
 
     public User() {}
     
-    public User(long id, String name, String email, String password, String verificationCode, boolean enable) {
+    public User(long id, String name, String email, String password, String verificationCode, boolean enabled) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.verificationCode = verificationCode;
-        this.enable = enable;
+        this.enabled = enabled;
     }
 
     
@@ -84,19 +84,15 @@ public class User implements UserDetails{
         this.verificationCode = verificationCode;
     }
 
-    public boolean isEnable() {
-        return enable;
-    }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+       return null;
     }
 
     @Override
@@ -121,7 +117,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 
     
