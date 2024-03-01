@@ -25,23 +25,16 @@ public class User implements UserDetails{
 
     private boolean enabled;
 
+    private String role;
+
     public User() {}
     
-    public User(long id, String name, String email, String password, String verificationCode, boolean enabled) {
-        this.id = id;
+
+    public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.verificationCode = verificationCode;
-        this.enabled = enabled;
-    }
-
-    
-
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
+        this.role = role;
     }
 
     public long getId() {
@@ -118,6 +111,22 @@ public class User implements UserDetails{
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+
+
+
+
+    public String getRole() {
+        return role;
+    }
+
+
+
+
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     

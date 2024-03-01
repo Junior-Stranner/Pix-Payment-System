@@ -11,11 +11,14 @@ public record UserCreateRequestDTO(
      @Email(message = "formato do e-mail está invalido", regexp = "^[a-z0-9.+-]+@[a-z0-9.-]+\\.[a-z]{2,}$")
      String email, 
      @NotBlank
-     @Size(min = 6, max = 6)
-     String password) {
+     @Size(min = 6, max = 6, message = "A ssenha deve conter no minimo 6 caracteres e no máximo 6 !")
+     String password,
+
+     String role) {
+    
     
 
     public User toModel(){
-        return new User(name,email,password);
+        return new User(name,email,password,role);
     }
 }
