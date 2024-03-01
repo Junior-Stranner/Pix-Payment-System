@@ -5,6 +5,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import br.com.jujubaprojects.paymentsystem.Pix.Credentials;
+import br.com.jujubaprojects.paymentsystem.dto.PixChargeRequest;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
@@ -109,7 +112,7 @@ public class PixService {
 
 
     private JSONObject configuringJsonObject(){
-        Credential credentials = new Credential();
+        Credentials credentials = new Credentials();
 
         JSONObject options = new JSONObject();
         options.put("client_id", clientId);
