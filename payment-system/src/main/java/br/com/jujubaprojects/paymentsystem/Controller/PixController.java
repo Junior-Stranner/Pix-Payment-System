@@ -1,4 +1,4 @@
-package br.com.jujubaprojects.paymentsystem.Controller;
+/*package br.com.jujubaprojects.paymentsystem.Controller;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +37,4 @@ public class PixController {
                 .body(response.toString());
     }
     
-}
+}*/

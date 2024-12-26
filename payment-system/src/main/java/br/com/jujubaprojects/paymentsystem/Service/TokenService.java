@@ -18,7 +18,7 @@ import br.com.jujubaprojects.paymentsystem.Entity.User;
 @Service
 public class TokenService {
 
-     @Value("${api.security.token.secret}")
+     @Value("${jwt.secret}")
      private String secret;
 
      public static final long EXPIRE_DAYS = 0;

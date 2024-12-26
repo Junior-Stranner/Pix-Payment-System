@@ -1,4 +1,4 @@
-package br.com.jujubaprojects.paymentsystem.Service;
+/*package br.com.jujubaprojects.paymentsystem.Service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,5 +122,5 @@ public class PixService {
 
         return options;
     }
- }
+ }*/
 
